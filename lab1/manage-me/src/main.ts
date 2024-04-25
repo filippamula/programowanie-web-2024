@@ -73,7 +73,7 @@ function loadProjects() {
           <button class="edit-project">Edit</button>
         </div>
       </div>
-      <dialog class="absolute inset-y-0">
+      <dialog class="absolute">
         <div>
           <h2>Edit project</h2>
           <div class="flex flex-wrap">
