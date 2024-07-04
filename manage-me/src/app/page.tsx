@@ -1,5 +1,4 @@
 import { getUserFromAuthToken } from "@/lib/actions/userActions";
-import LoginPage from "./login/page";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
