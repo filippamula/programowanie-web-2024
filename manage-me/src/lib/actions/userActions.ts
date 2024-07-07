@@ -58,11 +58,16 @@ export const getUserFromAuthToken = async () => {
   if (!token) return null;
 
   var payload = (await decryptJwtTokenPayload(token)) as jwtPayload;
+  if (payload === null) return null;
   return await findUserByUsername(payload.username);
 };
 
 export const decryptJwtTokenPayload = async (token: string) => {
-  return (await jwtVerify(token, jwtKey, { algorithms: [jwtAlg] })).payload;
+  try {
+    return (await jwtVerify(token, jwtKey, { algorithms: [jwtAlg] })).payload;
+  } catch {
+    return null;
+  }
 };
 
 export const refreshAuthToken = async () => {
