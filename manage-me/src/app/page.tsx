@@ -14,6 +14,7 @@ import { getUserFromAuthToken } from "@/lib/actions/userActions";
 import { redirect } from "next/navigation";
 import ActiveProject from "@/components/activeProject";
 import { getProjects } from "@/lib/db";
+import Projects from "@/components/projects";
 
 export default async function Home() {
   if ((await getUserFromAuthToken()) === null) {
@@ -59,7 +60,9 @@ export default async function Home() {
           </DropdownMenu>
         </div>
       </header>
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10"></main>
+      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+        <Projects projects={projects}></Projects>
+      </main>
     </div>
   );
 }

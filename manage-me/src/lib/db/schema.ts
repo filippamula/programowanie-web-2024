@@ -10,7 +10,7 @@ export const users = pgTable("users", {
 
 export const projects = pgTable("projects", {
   id: varchar("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
+  name: varchar("name", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 1024 }).notNull(),
   active: boolean("active").notNull(),
 });

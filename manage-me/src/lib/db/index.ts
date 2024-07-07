@@ -21,3 +21,13 @@ export const findUserByUsername = async (username: string) => {
 export const getProjects = async () => {
   return (await db.query.projects.findMany()) as Project[];
 };
+
+export const getProjectById = async (id: string) => {
+  return await db.query.projects.findFirst({
+    where: eq(schema.projects.id, id),
+  });
+};
+
+export const addProject = async (project: Project) => {
+  await db.insert(schema.projects).values(project);
+};

@@ -26,7 +26,6 @@ export default function AuthForm() {
 
   async function onSubmit(values: z.infer<typeof authSchema>) {
     const result = await authenticate(values);
-    console.log("x");
     if (result?.error) {
       form.setError("root", {
         type: "custom",
