@@ -46,3 +46,7 @@ export const editProject = async (project: Project) => {
     })
     .where(eq(schema.projects.id, project.id));
 };
+
+export const updateProjectsAsInactive = async () => {
+  await db.update(schema.projects).set({ active: false });
+};

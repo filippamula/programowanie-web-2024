@@ -9,7 +9,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -18,12 +18,18 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Project } from "@/lib/db";
+import { setActiveProject } from "@/lib/actions/projectActions";
 
-export default function ActiveProject({ projects }: { projects: Project[] }) {
+export default function ActiveProject({
+  projects,
+  selectedProject,
+  setSelectedProject,
+}: {
+  projects: Project[];
+  selectedProject: Project | undefined;
+  setSelectedProject: Dispatch<SetStateAction<Project | undefined>>;
+}) {
   const [open, setOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | undefined>(
-    projects.find((project) => project.active)
-  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -34,9 +40,7 @@ export default function ActiveProject({ projects }: { projects: Project[] }) {
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {selectedProject
-            ? projects.find((project) => project.active)?.name
-            : "Select project"}
+          {!selectedProject ? "Select project" : selectedProject.name}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -50,7 +54,8 @@ export default function ActiveProject({ projects }: { projects: Project[] }) {
                 <CommandItem
                   key={project.name}
                   value={project.name}
-                  onSelect={() => {
+                  onSelect={async () => {
+                    await setActiveProject(project);
                     setSelectedProject(project);
                     setOpen(false);
                   }}

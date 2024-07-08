@@ -31,6 +31,7 @@ export function AddProjectDialog() {
     defaultValues: {
       name: "",
       description: "",
+      active: false,
     },
   });
 

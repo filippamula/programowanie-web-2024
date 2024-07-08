@@ -16,4 +16,5 @@ export const addProjectSchema = z.object({
   description: z.string().min(1, {
     message: "Enter description",
   }),
+  active: z.boolean(),
 });
