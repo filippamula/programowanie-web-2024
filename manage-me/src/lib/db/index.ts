@@ -31,3 +31,18 @@ export const getProjectById = async (id: string) => {
 export const addProject = async (project: Project) => {
   await db.insert(schema.projects).values(project);
 };
+
+export const deleteProject = async (id: string) => {
+  await db.delete(schema.projects).where(eq(schema.projects.id, id));
+};
+
+export const editProject = async (project: Project) => {
+  await db
+    .update(schema.projects)
+    .set({
+      name: project.name,
+      description: project.description,
+      active: project.active,
+    })
+    .where(eq(schema.projects.id, project.id));
+};

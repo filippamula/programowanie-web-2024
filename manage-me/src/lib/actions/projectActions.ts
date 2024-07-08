@@ -1,6 +1,12 @@
 "use server";
 
-import { addProject, getProjects, Project } from "../db";
+import {
+  addProject,
+  deleteProject,
+  editProject,
+  getProjects,
+  Project,
+} from "../db";
 import { v4 as uuid } from "uuid";
 import { addProjectSchema } from "../formSchema";
 import { z } from "zod";
@@ -16,20 +22,23 @@ export const findProjects = async () => {
   }
 };
 
-export const saveProject = async (values: z.infer<typeof addProjectSchema>) => {
+export const saveProject = async (
+  values: z.infer<typeof addProjectSchema>,
+  id?: string | null
+) => {
   if (!values.name) {
     return {
-      error: "Username can't be empty",
+      error: "Name can't be empty",
     };
   }
   if (!values.description) {
     return {
-      error: "Password can't be empty",
+      error: "Description can't be empty",
     };
   }
 
   const project: Project = {
-    id: uuid(),
+    id: !id ? uuid() : id,
     name: values.name,
     description: values.description,
     active: false,
@@ -41,13 +50,21 @@ export const saveProject = async (values: z.infer<typeof addProjectSchema>) => {
     return { error: "Project with this name already exists" };
 
   try {
-    await addProject(project);
+    if (!id) {
+      await addProject(project);
+    } else {
+      await editProject(project);
+    }
     revalidatePath("/");
   } catch {
     return {
-      error: "Error during adding project",
+      error: "Error during saving project",
     };
   }
+};
+
+export const removeProject = async (id: string) => {
+  await deleteProject(id);
 };
 
 function isErrorResponse(response: any): response is { error: string } {
