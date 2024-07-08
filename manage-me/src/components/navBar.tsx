@@ -38,13 +38,13 @@ export default function NavBar({ projects }: { projects: Project[] }) {
         </Link>
         <Separator orientation="vertical" className="h-10" />
         <Link
-          href="#stories"
+          href="stories"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Stories
         </Link>
         <Link
-          href="#tasks"
+          href="tasks"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Tasks
