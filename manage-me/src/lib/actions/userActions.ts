@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { authSchema } from "../formSchema";
-import { findUserByUsername } from "../db";
+import { findUserByUsername, getUserById } from "../db";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import { redirect } from "next/navigation";
@@ -78,4 +78,8 @@ export const refreshAuthToken = async () => {
   await setAuthCookie(
     await generateJwtToken({ id: user.id, username: user.username })
   );
+};
+
+export const findUserById = async (id: string) => {
+  return await getUserById(id);
 };

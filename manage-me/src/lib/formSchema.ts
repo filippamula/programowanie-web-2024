@@ -18,3 +18,14 @@ export const addProjectSchema = z.object({
   }),
   active: z.boolean(),
 });
+
+export const addStorySchema = z.object({
+  name: z.string().min(1, {
+    message: "Enter name",
+  }),
+  description: z.string().min(1, {
+    message: "Enter description",
+  }),
+  priority: z.enum(["low", "medium", "high"]).default("medium"),
+  state: z.enum(["todo", "doing", "done"]).default("todo"),
+});

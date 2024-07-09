@@ -1,0 +1,140 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { saveStory } from "@/lib/actions/storiesActions";
+import { Project } from "@/lib/db";
+import { addStorySchema } from "@/lib/formSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Textarea } from "./ui/textarea";
+
+export function AddStoryDialog({ activeProject }: { activeProject: Project }) {
+  const [openDialog, setOpenDialog] = useState(false);
+  const form = useForm<z.infer<typeof addStorySchema>>({
+    resolver: zodResolver(addStorySchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      priority: "medium",
+      state: "todo",
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof addStorySchema>) => {
+    const result = await saveStory(values, activeProject);
+    if (result?.error) {
+      form.setError("root", {
+        type: "custom",
+        message: result.error,
+      });
+      return;
+    }
+    setOpenDialog(false);
+  };
+  return (
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Add story</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] max-h-[80%]">
+        <DialogHeader>
+          <DialogTitle>Add story</DialogTitle>
+        </DialogHeader>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-5 py-4"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Textarea
+                      className="max-h-[400px]"
+                      placeholder="description"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="priority"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select {...field}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select priority" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Priority</SelectLabel>
+                          <SelectItem value="low">Low</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="high">High</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {form.formState.errors.root && (
+              <p className="w-full text-center font-semibold text-destructive">
+                {form.formState.errors.root.message}
+              </p>
+            )}
+            <DialogFooter>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+}

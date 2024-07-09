@@ -4,6 +4,7 @@ import {
   addProject,
   deleteProject,
   editProject,
+  getActiveProject,
   getProjects,
   Project,
   updateProjectsAsInactive,
@@ -72,8 +73,11 @@ export const removeProject = async (id: string) => {
 export const setActiveProject = async (project: Project) => {
   await setAllProjectsAsInactive();
   project.active = true;
-  // console.log(project);
   await saveProject(project, project.id);
+};
+
+export const findActiveProject = async () => {
+  return await getActiveProject();
 };
 
 async function setAllProjectsAsInactive() {

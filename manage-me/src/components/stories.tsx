@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Trash2 } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,15 +22,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { removeProject } from "@/lib/actions/projectActions";
-import { Project } from "@/lib/db";
+import { Project, Story } from "@/lib/db";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AddProjectDialog } from "./addProjectDialog";
-import { EditProjectDialog } from "./editProjectDialog";
+import { AddStoryDialog } from "./addStoryDialog";
+import { findUserById } from "@/lib/actions/userActions";
 
-export const columns = (router: AppRouterInstance): ColumnDef<Project>[] => {
+export const columns = (router: AppRouterInstance): ColumnDef<Story>[] => {
   return [
     {
       accessorKey: "name",
@@ -50,44 +49,44 @@ export const columns = (router: AppRouterInstance): ColumnDef<Project>[] => {
     {
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => (
-        <div className="lowercase">{row.original.description}</div>
-      ),
+      cell: ({ row }) => <div>{row.original.description}</div>,
     },
     {
-      id: "edit",
-      header: "Edit",
-      cell: ({ row }) => (
-        <Button variant="ghost">
-          <EditProjectDialog project={row.original}></EditProjectDialog>
-        </Button>
-      ),
+      accessorKey: "priority",
+      header: "Priority",
+      cell: ({ row }) => <div>{row.original.priority}</div>,
     },
     {
-      id: "delete",
-      header: "Delete",
-      cell: ({ row }) => (
-        <Button
-          variant="ghost"
-          onClick={async () => {
-            await removeProject(row.original.id);
-            router.refresh();
-          }}
-        >
-          <Trash2 />
-        </Button>
-      ),
+      accessorKey: "state",
+      header: "State",
+      cell: ({ row }) => <div>{row.original.state}</div>,
+    },
+    {
+      accessorKey: "owner",
+      header: "Owner",
+      cell: async ({ row }) => <div>{row.original.ownerUsername}</div>,
+    },
+    {
+      accessorKey: "createDate",
+      header: "Creation date",
+      cell: ({ row }) => <div>{row.original.createDate}</div>,
     },
   ];
 };
 
-export default function Projects({ projects }: { projects: Project[] }) {
+export default function Stories({
+  stories,
+  activeProject,
+}: {
+  stories: Story[];
+  activeProject: Project;
+}) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const router = useRouter();
 
   const table = useReactTable({
-    data: projects,
+    data: stories,
     columns: columns(router),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -104,14 +103,14 @@ export default function Projects({ projects }: { projects: Project[] }) {
     <div className="w-full">
       <div className="flex items-center py-4 justify-between">
         <Input
-          placeholder="Filter projects..."
+          placeholder="Search stories"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <AddProjectDialog></AddProjectDialog>
+        <AddStoryDialog activeProject={activeProject}></AddStoryDialog>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -152,7 +151,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={4} className="h-24 text-center">
+                <TableCell colSpan={100} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
