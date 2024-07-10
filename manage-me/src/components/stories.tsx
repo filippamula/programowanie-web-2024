@@ -64,7 +64,7 @@ export const columns = (router: AppRouterInstance): ColumnDef<Story>[] => {
     {
       accessorKey: "owner",
       header: "Owner",
-      cell: async ({ row }) => <div>{row.original.ownerUsername}</div>,
+      cell: ({ row }) => <div>{row.original.ownerUsername}</div>,
     },
     {
       accessorKey: "createDate",

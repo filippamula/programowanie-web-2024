@@ -3,7 +3,6 @@ import { Pool } from "pg";
 
 import * as schema from "@/lib/db/schema";
 import { eq, InferSelectModel } from "drizzle-orm";
-import { TypeOf, z } from "zod";
 
 const client = new Pool({
   connectionString: process.env.DATABASE_URL!,

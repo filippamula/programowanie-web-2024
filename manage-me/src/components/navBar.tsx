@@ -1,8 +1,9 @@
 "use client";
 
+import { CircleUser, LayoutListIcon } from "lucide-react";
 import Link from "next/link";
-import { CircleUser, LayoutListIcon, Search } from "lucide-react";
 
+import ActiveProject from "@/components/activeProject";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,7 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ActiveProject from "@/components/activeProject";
 import { Separator } from "@/components/ui/separator";
 import { Project } from "@/lib/db";
 import { useState } from "react";
@@ -31,7 +31,7 @@ export default function NavBar({ projects }: { projects: Project[] }) {
           <LayoutListIcon className="h-6 w-6" />
         </Link>
         <Link
-          href="#"
+          href="/"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Projects
