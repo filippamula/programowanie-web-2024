@@ -1,4 +1,13 @@
-import { varchar, pgTable, boolean, pgEnum, date } from "drizzle-orm/pg-core";
+import {
+  varchar,
+  pgTable,
+  boolean,
+  pgEnum,
+  date,
+  serial,
+  integer,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: varchar("id").primaryKey(),
@@ -28,4 +37,18 @@ export const stories = pgTable("stories", {
   priority: priorityEnum("priority").notNull(),
   state: stateEnum("state").notNull(),
   createDate: date("date").notNull(),
+});
+
+export const tasks = pgTable("tasks", {
+  id: serial("id").primaryKey(),
+  name: varchar("name").notNull(),
+  description: varchar("description", { length: 1024 }).notNull(),
+  priority: priorityEnum("priority").notNull(),
+  storyId: varchar("storyId").notNull(),
+  expectedManHours: integer("expectedManHours"),
+  state: stateEnum("state").notNull(),
+  createTimestamp: timestamp("creationTimestamp").notNull(),
+  startTimestamp: timestamp("startTimestamp"),
+  endTimestamp: timestamp("endTimestamp"),
+  assignedUserId: varchar("assignedUserId"),
 });

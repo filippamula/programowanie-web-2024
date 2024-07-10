@@ -22,71 +22,63 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Project, Story } from "@/lib/db";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { Story, Task } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AddStoryDialog } from "./addStoryDialog";
+import { AddTaskDialog } from "./addTaskDialog";
 
-export const columns = (router: AppRouterInstance): ColumnDef<Story>[] => {
-  return [
-    {
-      accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Name
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
+export const columns: ColumnDef<Task>[] = [
+  {
+    accessorKey: "id",
+    header: "id",
+    cell: ({ row }) => <div>#{row.original.id}</div>,
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
-    {
-      accessorKey: "description",
-      header: "Description",
-      cell: ({ row }) => <div>{row.original.description}</div>,
-    },
-    {
-      accessorKey: "priority",
-      header: "Priority",
-      cell: ({ row }) => <div>{row.original.priority}</div>,
-    },
-    {
-      accessorKey: "state",
-      header: "State",
-      cell: ({ row }) => <div>{row.original.state}</div>,
-    },
-    {
-      accessorKey: "owner",
-      header: "Owner",
-      cell: ({ row }) => <div>{row.original.ownerUsername}</div>,
-    },
-    {
-      accessorKey: "createDate",
-      header: "Creation date",
-      cell: ({ row }) => <div>{row.original.createDate}</div>,
-    },
-  ];
-};
+    cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
+  },
+  {
+    accessorKey: "priority",
+    header: "Priority",
+    cell: ({ row }) => <div>{row.original.priority}</div>,
+  },
+  {
+    accessorKey: "state",
+    header: "State",
+    cell: ({ row }) => <div>{row.original.state}</div>,
+  },
+  {
+    accessorKey: "assignedUser",
+    header: "Assigned user",
+    cell: ({ row }) => <div>{row.original.assignedUserId}</div>,
+  },
+];
 
-export default function Stories({
-  stories,
-  activeProject,
+export default function Tasks({
+  tasks,
+  story,
 }: {
-  stories: Story[];
-  activeProject: Project;
+  tasks: Task[];
+  story: Story;
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const router = useRouter();
 
   const table = useReactTable({
-    data: stories,
-    columns: columns(router),
+    data: tasks,
+    columns: columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -102,14 +94,14 @@ export default function Stories({
     <div className="w-full">
       <div className="flex items-center py-4 justify-between">
         <Input
-          placeholder="Search stories"
+          placeholder="Search tasks"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <AddStoryDialog activeProject={activeProject}></AddStoryDialog>
+        <AddTaskDialog story={story}></AddTaskDialog>
       </div>
       <div className="rounded-md border">
         <Table>

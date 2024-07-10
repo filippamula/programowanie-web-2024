@@ -13,6 +13,7 @@ export const db = drizzle(client, { schema });
 export type Project = InferSelectModel<typeof schema.projects>;
 export type Story = InferSelectModel<typeof schema.stories>;
 export type User = InferSelectModel<typeof schema.users>;
+export type Task = InferSelectModel<typeof schema.tasks>;
 
 export const findUserByUsername = async (username: string) => {
   return await db.query.users.findFirst({
@@ -89,4 +90,30 @@ export const getStoryById = async (id: string) => {
   return await db.query.stories.findFirst({
     where: eq(schema.stories.id, id),
   });
+};
+
+export const getTasksByStoryId = async (storyId: string) => {
+  return await db.query.tasks.findMany({
+    where: eq(schema.tasks.storyId, storyId),
+  });
+};
+
+export const addTask = async (task: Task) => {
+  await db.insert(schema.tasks).values(task);
+};
+
+export const editTask = async (task: Task) => {
+  await db
+    .update(schema.tasks)
+    .set({
+      name: task.name,
+      description: task.description,
+      priority: task.priority,
+      state: task.state,
+      assignedUserId: task.assignedUserId,
+      expectedManHours: task.expectedManHours,
+      endTimestamp: task.endTimestamp,
+      startTimestamp: task.startTimestamp,
+    })
+    .where(eq(schema.tasks.id, task.id));
 };

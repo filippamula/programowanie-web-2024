@@ -28,7 +28,7 @@ export default async function RootLayout({
 
   const projects = await getProjects();
   return (
-    <div>
+    <div className="min-h-screen">
       <NavBar projects={projects} />
       {children}
     </div>

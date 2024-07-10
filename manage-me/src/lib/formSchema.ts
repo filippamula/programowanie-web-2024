@@ -29,3 +29,15 @@ export const addStorySchema = z.object({
   priority: z.enum(["low", "medium", "high"]).default("medium"),
   state: z.enum(["todo", "doing", "done"]).default("todo"),
 });
+
+export const addTaskSchema = z.object({
+  name: z.string().min(1, {
+    message: "Enter name",
+  }),
+  description: z.string().min(1, {
+    message: "Enter description",
+  }),
+  priority: z.enum(["low", "medium", "high"]).default("medium"),
+  state: z.enum(["todo", "doing", "done"]).default("todo"),
+  expectedManHours: z.number().min(1).nullable(),
+});
