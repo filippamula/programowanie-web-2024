@@ -1,0 +1,37 @@
+import StorySummary from "@/components/storySummary";
+import { findProjectById } from "@/lib/actions/projectActions";
+import { findStoryById } from "@/lib/actions/storiesActions";
+import { findUserById } from "@/lib/actions/userActions";
+
+export default async function StoryPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const story = await findStoryById(params.id);
+  if (!story) {
+    return <div className="ml-auto mr-auto">Story not found.</div>;
+  }
+  const project = await findProjectById(story.projectId);
+  if (!project) {
+    return (
+      <div className="ml-auto mr-auto">Corresponding project not found.</div>
+    );
+  }
+  const owner = await findUserById(story.userId);
+  if (!owner) {
+    return <div className="ml-auto mr-auto">Project owner not found.</div>;
+  }
+
+  return (
+    <div className="mt-5">
+      <div className="w-[20%] ml-auto mr-5 mb-5">
+        <StorySummary
+          story={story}
+          project={project}
+          owner={owner}
+        ></StorySummary>
+      </div>
+    </div>
+  );
+}

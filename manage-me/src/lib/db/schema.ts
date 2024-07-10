@@ -20,8 +20,8 @@ export const priorityEnum = pgEnum("priority", ["low", "medium", "high"]);
 
 export const stories = pgTable("stories", {
   id: varchar("id").primaryKey(),
-  projectId: varchar("projectId"),
-  userId: varchar("userId"),
+  projectId: varchar("projectId").notNull(),
+  userId: varchar("userId").notNull(),
   ownerUsername: varchar("ownerUsername", { length: 256 }).notNull(),
   name: varchar("name", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 1024 }).notNull(),

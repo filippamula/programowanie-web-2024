@@ -28,13 +28,9 @@ export default async function RootLayout({
 
   const projects = await getProjects();
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="flex min-h-screen w-full flex-col">
-          <NavBar projects={projects} />
-          {children}
-        </div>
-      </body>
-    </html>
+    <div>
+      <NavBar projects={projects} />
+      {children}
+    </div>
   );
 }

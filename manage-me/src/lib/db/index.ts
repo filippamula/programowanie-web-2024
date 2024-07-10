@@ -12,6 +12,7 @@ export const db = drizzle(client, { schema });
 
 export type Project = InferSelectModel<typeof schema.projects>;
 export type Story = InferSelectModel<typeof schema.stories>;
+export type User = InferSelectModel<typeof schema.users>;
 
 export const findUserByUsername = async (username: string) => {
   return await db.query.users.findFirst({
@@ -82,4 +83,10 @@ export const editStory = async (story: Story) => {
       state: story.state,
     })
     .where(eq(schema.projects.id, story.id));
+};
+
+export const getStoryById = async (id: string) => {
+  return await db.query.stories.findFirst({
+    where: eq(schema.stories.id, id),
+  });
 };

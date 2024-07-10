@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AddStoryDialog } from "./addStoryDialog";
 import { findUserById } from "@/lib/actions/userActions";
+import Link from "next/link";
 
 export const columns = (router: AppRouterInstance): ColumnDef<Story>[] => {
   return [
@@ -137,7 +138,7 @@ export default function Stories({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  onClick={() => router.push("/story/" + row.original.id)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

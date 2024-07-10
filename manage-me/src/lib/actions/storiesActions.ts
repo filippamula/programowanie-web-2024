@@ -1,7 +1,14 @@
 "use server";
 
 import { z } from "zod";
-import { addStory, editStory, getStories, Project, Story } from "../db";
+import {
+  addStory,
+  editStory,
+  getStories,
+  getStoryById,
+  Project,
+  Story,
+} from "../db";
 import { addStorySchema } from "../formSchema";
 import { v4 as uuid } from "uuid";
 import { getUserFromAuthToken } from "./userActions";
@@ -57,4 +64,8 @@ export const saveStory = async (
       error: "Error during saving story",
     };
   }
+};
+
+export const findStoryById = async (id: string) => {
+  return await getStoryById(id);
 };
