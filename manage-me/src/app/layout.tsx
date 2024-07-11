@@ -1,4 +1,5 @@
 import "@/app/globals.css";
+import { ThemeProvider } from "@/components/themeProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -17,7 +18,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex min-h-screen w-full flex-col">{children}</div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex min-h-screen w-full flex-col">{children}</div>
+        </ThemeProvider>
       </body>
     </html>
   );
