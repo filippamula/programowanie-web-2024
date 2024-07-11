@@ -117,3 +117,9 @@ export const editTask = async (task: Task) => {
     })
     .where(eq(schema.tasks.id, task.id));
 };
+
+export const getTaskById = async (id: number) => {
+  return await db.query.tasks.findFirst({
+    where: eq(schema.tasks.id, id),
+  });
+};

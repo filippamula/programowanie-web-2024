@@ -128,7 +128,7 @@ export default function Tasks({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  onClick={() => router.push("/story/" + row.original.id)}
+                  onClick={() => router.push("/task/" + row.original.id)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

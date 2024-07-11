@@ -39,7 +39,7 @@ export default async function StoryPage({
           <Tasks tasks={tasks} story={story}></Tasks>
         </CardContent>
       </Card>
-      <div className="w-[30%] ml-auto mr-5 mb-5">
+      <div className="w-[50%] ml-auto mr-5 mb-5">
         <StorySummary
           story={story}
           project={project}

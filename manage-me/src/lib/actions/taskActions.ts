@@ -2,7 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { addTask, editTask, getTasksByStoryId, Story, Task } from "../db";
+import {
+  addTask,
+  editTask,
+  getTaskById,
+  getTasksByStoryId,
+  Story,
+  Task,
+} from "../db";
 import { addTaskSchema } from "../formSchema";
 
 export const findTasksByStoryId = async (storyId: string) => {
@@ -51,4 +58,8 @@ export const saveTask = async (
       error: "Error during saving task",
     };
   }
+};
+
+export const findTaskById = async (id: number) => {
+  return await getTaskById(id);
 };
