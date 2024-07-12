@@ -17,13 +17,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
-import { saveTask } from "@/lib/actions/taskActions";
+import { removeTask, saveTask } from "@/lib/actions/taskActions";
 import { Story, Task, User } from "@/lib/db";
 import { editTaskSchema } from "@/lib/formSchema";
 import { DATE_ISO_FORMAT } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2Icon } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -39,6 +39,7 @@ import {
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 import UserComboBox from "./userComboBox";
+import { useRouter } from "next/navigation";
 
 export default function TaskCard({
   task,
@@ -50,6 +51,7 @@ export default function TaskCard({
   users: User[];
 }) {
   const [editMode, setEditMode] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof editTaskSchema>>({
     resolver: zodResolver(editTaskSchema),
     defaultValues: {
@@ -74,6 +76,11 @@ export default function TaskCard({
     setEditMode(false);
   };
 
+  const handleDelete = async (task: Task) => {
+    const result = await removeTask(task);
+    router.replace(`/story/${task.storyId}`);
+  };
+
   return (
     <Card className="overflow-hidden m-4">
       <CardHeader className="flex flex-row items-start bg-muted/50 justify-between">
@@ -83,9 +90,14 @@ export default function TaskCard({
           </CardTitle>
           <CardDescription>{story.name}</CardDescription>
         </div>
-        <Button variant="outline" onClick={() => setEditMode(!editMode)}>
-          <Pencil />
-        </Button>
+        <div>
+          <Button variant="outline" onClick={() => setEditMode(!editMode)}>
+            <Pencil />
+          </Button>
+          <Button className="ml-2" onClick={() => handleDelete(task)}>
+            <Trash2Icon />
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="p-6 text-sm">
         {editMode

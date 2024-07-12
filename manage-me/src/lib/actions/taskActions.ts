@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
   addTask,
+  deleteTask,
   editTask,
   getTaskById,
   getTasksByStoryId,
@@ -78,6 +79,10 @@ export const saveTask = async (
 
 export const findTaskById = async (id: number) => {
   return await getTaskById(id);
+};
+
+export const removeTask = async (task: Task) => {
+  return await deleteTask(task);
 };
 
 function getEndDate(

@@ -130,6 +130,10 @@ export const getTaskById = async (id: number) => {
   });
 };
 
+export const deleteTask = async (task: Task) => {
+  await db.delete(schema.tasks).where(eq(schema.tasks.id, task.id));
+};
+
 export const getUsers = async () => {
   return await db.query.users.findMany();
 };
