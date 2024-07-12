@@ -22,12 +22,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Story, Task } from "@/lib/db";
+import { Story, Task, User } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AddTaskDialog } from "./addTaskDialog";
 
-export const columns: ColumnDef<Task>[] = [
+export const columns = (users: User[]): ColumnDef<Task>[] => [
   {
     accessorKey: "id",
     header: "id",
@@ -61,16 +61,29 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "assignedUser",
     header: "Assigned user",
-    cell: ({ row }) => <div>{row.original.assignedUserId}</div>,
+    cell: ({ row }) => {
+      const assignedUser = users.find(
+        (it) => it.id == row.original.assignedUserId
+      );
+      return (
+        <div>
+          {!assignedUser
+            ? "-"
+            : `${assignedUser.name} ${assignedUser.surname} (${assignedUser.username})`}
+        </div>
+      );
+    },
   },
 ];
 
 export default function Tasks({
   tasks,
   story,
+  users,
 }: {
   tasks: Task[];
   story: Story;
+  users: User[];
 }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -78,7 +91,7 @@ export default function Tasks({
 
   const table = useReactTable({
     data: tasks,
-    columns: columns,
+    columns: columns(users),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

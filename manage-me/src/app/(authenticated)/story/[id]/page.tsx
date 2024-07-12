@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { findProjectById } from "@/lib/actions/projectActions";
 import { findStoryById } from "@/lib/actions/storiesActions";
 import { findTasksByStoryId } from "@/lib/actions/taskActions";
-import { findUserById } from "@/lib/actions/userActions";
+import { findUserById, findUsers } from "@/lib/actions/userActions";
 
 export default async function StoryPage({
   params,
@@ -26,6 +26,7 @@ export default async function StoryPage({
     return <div className="ml-auto mr-auto">Project owner not found.</div>;
   }
 
+  const users = await findUsers();
   const tasks = await findTasksByStoryId(story.id);
 
   return (
@@ -36,7 +37,7 @@ export default async function StoryPage({
           <CardTitle>Tasks</CardTitle>
         </CardHeader>
         <CardContent>
-          <Tasks tasks={tasks} story={story}></Tasks>
+          <Tasks tasks={tasks} story={story} users={users}></Tasks>
         </CardContent>
       </Card>
       <div className="w-[50%] ml-auto mr-5 mb-5">
