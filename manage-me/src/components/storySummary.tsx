@@ -8,6 +8,8 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Separator } from "./ui/separator";
+import { format } from "date-fns";
+import { DATE_ISO_FORMAT } from "@/lib/utils";
 
 export default function StorySummary({
   story,
@@ -55,7 +57,7 @@ export default function StorySummary({
       </CardContent>
       <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
         <div className="text-xs text-muted-foreground">
-          Created <time dateTime="2023-11-23">{story.createDate}</time>
+          Created {format(story.createDate, DATE_ISO_FORMAT)}
         </div>
       </CardFooter>
     </Card>

@@ -45,10 +45,12 @@ export function AddTaskDialog({ story }: { story: Story }) {
       priority: "medium",
       state: "todo",
       expectedManHours: null,
+      assignedUserId: null,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof addTaskSchema>) => {
+    console.log(values);
     const result = await saveTask(values, story);
     if (result?.error) {
       form.setError("root", {

@@ -2,7 +2,7 @@ import Stories from "@/components/stories";
 import { findActiveProject } from "@/lib/actions/projectActions";
 import { findStories } from "@/lib/actions/storiesActions";
 
-export default async function Home() {
+export default async function ProjectsPage() {
   const activeProject = await findActiveProject();
 
   if (!activeProject) {

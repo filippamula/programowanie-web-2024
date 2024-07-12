@@ -40,4 +40,18 @@ export const addTaskSchema = z.object({
   priority: z.enum(["low", "medium", "high"]).default("medium"),
   state: z.enum(["todo", "doing", "done"]).default("todo"),
   expectedManHours: z.number().min(1).nullable(),
+  assignedUserId: z.string().nullable(),
+});
+
+export const editTaskSchema = z.object({
+  name: z.string().min(1, {
+    message: "Enter name",
+  }),
+  description: z.string().min(1, {
+    message: "Enter description",
+  }),
+  priority: z.enum(["low", "medium", "high"]).default("medium"),
+  state: z.enum(["todo", "doing", "done"]).default("todo"),
+  expectedManHours: z.number().min(1).nullable(),
+  assignedUserId: z.string().nullable(),
 });

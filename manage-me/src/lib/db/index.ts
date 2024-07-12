@@ -98,7 +98,7 @@ export const getTasksByStoryId = async (storyId: string) => {
   });
 };
 
-export const addTask = async (task: Task) => {
+export const addTask = async (task: Omit<Task, "id">) => {
   await db.insert(schema.tasks).values(task);
 };
 
@@ -122,4 +122,8 @@ export const getTaskById = async (id: number) => {
   return await db.query.tasks.findFirst({
     where: eq(schema.tasks.id, id),
   });
+};
+
+export const getUsers = async () => {
+  return await db.query.users.findMany();
 };

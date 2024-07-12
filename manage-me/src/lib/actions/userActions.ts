@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { authSchema } from "../formSchema";
-import { findUserByUsername, getUserById } from "../db";
+import { findUserByUsername, getUserById, getUsers } from "../db";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import { redirect } from "next/navigation";
@@ -82,4 +82,8 @@ export const refreshAuthToken = async () => {
 
 export const findUserById = async (id: string) => {
   return await getUserById(id);
+};
+
+export const findUsers = async () => {
+  return await getUsers();
 };

@@ -11,6 +11,7 @@ import {
   Task,
 } from "../db";
 import { addTaskSchema } from "../formSchema";
+import { tasks } from "../db/schema";
 
 export const findTasksByStoryId = async (storyId: string) => {
   return await getTasksByStoryId(storyId);
@@ -19,7 +20,7 @@ export const findTasksByStoryId = async (storyId: string) => {
 export const saveTask = async (
   values: z.infer<typeof addTaskSchema>,
   story: Story,
-  id?: number | null
+  id?: number
 ) => {
   if (!values.name) {
     return {
@@ -32,28 +33,39 @@ export const saveTask = async (
     };
   }
 
-  const task: Task = {
-    id: !id ? 0 : id,
-    name: values.name,
-    description: values.description,
-    priority: values.priority,
-    state: values.state,
-    createTimestamp: new Date(),
-    storyId: story.id,
-    assignedUserId: null,
-    expectedManHours: values.expectedManHours,
-    endTimestamp: null,
-    startTimestamp: null,
-  };
-
   try {
-    if (!id) {
+    if (id === undefined) {
+      const task: Omit<Task, "id"> = {
+        name: values.name,
+        description: values.description,
+        priority: values.priority,
+        state: values.state,
+        createTimestamp: new Date(),
+        storyId: story.id,
+        assignedUserId: values.assignedUserId,
+        expectedManHours: values.expectedManHours,
+        endTimestamp: null,
+        startTimestamp: null,
+      };
       await addTask(task);
     } else {
+      const task: Task = {
+        id: id,
+        name: values.name,
+        description: values.description,
+        priority: values.priority,
+        state: values.state,
+        createTimestamp: new Date(),
+        storyId: story.id,
+        assignedUserId: values.assignedUserId,
+        expectedManHours: values.expectedManHours,
+        endTimestamp: null,
+        startTimestamp: null,
+      };
       await editTask(task);
     }
     revalidatePath("/");
-  } catch {
+  } catch (e) {
     return {
       error: "Error during saving task",
     };
