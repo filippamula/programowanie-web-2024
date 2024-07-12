@@ -35,7 +35,7 @@ export default function StorySummary({
           <div className="flex justify-between">
             <div className="font-semibold">Owner</div>
             <div className="text-muted-foreground">
-              {owner.name} {owner.surname} ({owner.username})
+              {owner.name} {owner.surname} ({owner.role})
             </div>
           </div>
           <Separator className="my-1" />

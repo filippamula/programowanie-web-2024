@@ -9,12 +9,15 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 
+export const roleEnum = pgEnum("role", ["admin", "devops", "developer"]);
+
 export const users = pgTable("users", {
   id: varchar("id").primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
   surname: varchar("surname", { length: 256 }).notNull(),
   username: varchar("username", { length: 256 }).notNull(),
   password: varchar("password", { length: 256 }).notNull(),
+  role: roleEnum("role").notNull(),
 });
 
 export const projects = pgTable("projects", {

@@ -71,6 +71,7 @@ export default function TaskCard({
       });
       return;
     }
+    setEditMode(false);
   };
 
   return (
@@ -127,7 +128,7 @@ function TaskInfo({ task, users }: { task: Task; users: User[] }) {
           <div className="text-muted-foreground">
             {assignedUser === undefined
               ? "-"
-              : `${assignedUser.name} ${assignedUser.surname} (${assignedUser.username})`}
+              : `${assignedUser.name} ${assignedUser.surname} (${assignedUser.role})`}
           </div>
         </div>
         <Separator className="mt-1 mb-4" />

@@ -38,7 +38,7 @@ export default function UserComboBox({
         >
           {!selectedUser
             ? "Select user"
-            : `${selectedUser.name} ${selectedUser.surname} (${selectedUser.username})`}
+            : `${selectedUser.name} ${selectedUser.surname} (${selectedUser.role})`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -57,7 +57,7 @@ export default function UserComboBox({
                     setOpen(false);
                   }}
                 >
-                  {user.name} {user.surname} ({user.username})
+                  {user.name} {user.surname} ({user.role})
                 </CommandItem>
               ))}
             </CommandGroup>

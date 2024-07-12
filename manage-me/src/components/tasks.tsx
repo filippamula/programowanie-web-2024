@@ -69,7 +69,7 @@ export const columns = (users: User[]): ColumnDef<Task>[] => [
         <div>
           {!assignedUser
             ? "-"
-            : `${assignedUser.name} ${assignedUser.surname} (${assignedUser.username})`}
+            : `${assignedUser.name} ${assignedUser.surname} (${assignedUser.role})`}
         </div>
       );
     },
