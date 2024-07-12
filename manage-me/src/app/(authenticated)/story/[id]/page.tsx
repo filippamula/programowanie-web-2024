@@ -1,6 +1,5 @@
+import StoryBody from "@/components/storyBody";
 import StorySummary from "@/components/storySummary";
-import Tasks from "@/components/tasks";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { findProjectById } from "@/lib/actions/projectActions";
 import { findStoryById } from "@/lib/actions/storiesActions";
 import { findTasksByStoryId } from "@/lib/actions/taskActions";
@@ -32,14 +31,7 @@ export default async function StoryPage({
   return (
     //todo: make card and sumary fit screen
     <div className="mt-5 flex">
-      <Card className=" w-full mx-4 mb-4 ">
-        <CardHeader>
-          <CardTitle>Tasks</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tasks tasks={tasks} story={story} users={users}></Tasks>
-        </CardContent>
-      </Card>
+      <StoryBody tasks={tasks} story={story} users={users}></StoryBody>
       <div className="w-[50%] ml-auto mr-5 mb-5">
         <StorySummary
           story={story}
