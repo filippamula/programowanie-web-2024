@@ -201,7 +201,7 @@ function TaskEdit({
                     <div className="flex justify-between">
                       <div className="font-semibold">Priority</div>
                       <div className="text-muted-foreground">
-                        <Select {...field}>
+                        <Select {...field} onValueChange={field.onChange}>
                           <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Select priority" />
                           </SelectTrigger>
@@ -233,7 +233,7 @@ function TaskEdit({
                     <div className="flex justify-between">
                       <div className="font-semibold">State</div>
                       <div className="text-muted-foreground">
-                        <Select {...field}>
+                        <Select {...field} onValueChange={field.onChange}>
                           <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Select state" />
                           </SelectTrigger>

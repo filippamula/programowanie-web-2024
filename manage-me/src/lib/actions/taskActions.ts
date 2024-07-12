@@ -44,11 +44,15 @@ export const saveTask = async (
         storyId: story.id,
         assignedUserId: values.assignedUserId,
         expectedManHours: values.expectedManHours,
-        endTimestamp: null,
-        startTimestamp: null,
+        endTimestamp: values.state === "done" ? new Date() : null,
+        startTimestamp: values.state === "doing" ? new Date() : null,
       };
       await addTask(task);
     } else {
+      const oldTask = await getTaskById(id);
+      if (!oldTask) {
+        return { error: "Error during saving task" };
+      }
       const task: Task = {
         id: id,
         name: values.name,
@@ -59,8 +63,8 @@ export const saveTask = async (
         storyId: story.id,
         assignedUserId: values.assignedUserId,
         expectedManHours: values.expectedManHours,
-        endTimestamp: null,
-        startTimestamp: null,
+        endTimestamp: getEndDate(oldTask, values),
+        startTimestamp: getStartDate(oldTask, values),
       };
       await editTask(task);
     }
@@ -75,3 +79,29 @@ export const saveTask = async (
 export const findTaskById = async (id: number) => {
   return await getTaskById(id);
 };
+
+function getEndDate(
+  oldTask: Task,
+  values: z.infer<typeof addTaskSchema>
+): Date | null {
+  if (values.state === "done" && oldTask.endTimestamp === null) {
+    return new Date();
+  }
+
+  if (values.state == "todo") return null;
+
+  return oldTask.endTimestamp;
+}
+
+function getStartDate(
+  oldTask: Task,
+  values: z.infer<typeof addTaskSchema>
+): Date | null {
+  if (values.state === "doing" && oldTask.state === "todo") {
+    return new Date();
+  }
+
+  if (values.state == "todo") return null;
+
+  return oldTask.startTimestamp;
+}
