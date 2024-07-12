@@ -1,6 +1,6 @@
 import Stories from "@/components/stories";
 import { findActiveProject } from "@/lib/actions/projectActions";
-import { findStories } from "@/lib/actions/storiesActions";
+import { findStoriesByProjectId } from "@/lib/actions/storiesActions";
 
 export default async function ProjectsPage() {
   const activeProject = await findActiveProject();
@@ -15,7 +15,7 @@ export default async function ProjectsPage() {
     );
   }
 
-  const stories = await findStories();
+  const stories = await findStoriesByProjectId(activeProject.id);
 
   return (
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">

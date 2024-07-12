@@ -70,6 +70,12 @@ export const getStories = async () => {
   return await db.query.stories.findMany();
 };
 
+export const getStoriesByProjectId = async (id: string) => {
+  return await db.query.stories.findMany({
+    where: eq(schema.stories.projectId, id),
+  });
+};
+
 export const addStory = async (story: Story) => {
   await db.insert(schema.stories).values(story);
 };

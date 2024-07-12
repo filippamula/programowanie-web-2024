@@ -5,6 +5,7 @@ import {
   addStory,
   editStory,
   getStories,
+  getStoriesByProjectId,
   getStoryById,
   Project,
   Story,
@@ -17,6 +18,10 @@ import { revalidatePath } from "next/cache";
 
 export const findStories = async () => {
   return await getStories();
+};
+
+export const findStoriesByProjectId = async (id: string) => {
+  return await getStoriesByProjectId(id);
 };
 
 export const saveStory = async (
