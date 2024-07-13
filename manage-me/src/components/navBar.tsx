@@ -17,6 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import { Project } from "@/lib/db";
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import { logoutUser } from "@/lib/actions/userActions";
 
 export default function NavBar({ projects }: { projects: Project[] }) {
   const [selectedProject, setSelectedProject] = useState<Project | undefined>(
@@ -77,7 +78,9 @@ export default function NavBar({ projects }: { projects: Project[] }) {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => logoutUser()}>
+              Logout
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

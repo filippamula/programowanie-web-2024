@@ -109,7 +109,7 @@ export function AddTaskDialog({ story }: { story: Story }) {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select {...field}>
+                    <Select {...field} onValueChange={field.onChange}>
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select priority" />
                       </SelectTrigger>

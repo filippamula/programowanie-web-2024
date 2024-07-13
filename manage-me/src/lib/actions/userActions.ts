@@ -87,3 +87,7 @@ export const findUserById = async (id: string) => {
 export const findUsers = async () => {
   return await getUsers();
 };
+
+export const logoutUser = () => {
+  cookies().delete(authTokenCookie);
+};
